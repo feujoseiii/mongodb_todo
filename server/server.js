@@ -12,23 +12,37 @@ mongoDB.then((res) => {
   console.log('Unable to connect to database');
 });
 
-
 var Todo = mongoose.model('Todo', {
-  text: { type: String },
-  completed: { type: Boolean },
-  completedAt: { type: Number }
+  text: {
+    type: String,
+    required: true,
+    minlength: 1,
+    trim: true
+  },
+  completed: {
+    type: Boolean,
+    default: false
+  },
+  completedAt: {
+    type: Number,
+    default: null
+  }
 });
 
-var newTodo = new Todo({
-  text: 'Cook dinner'
+var User = mongoose.model('User', {
+  email: {
+    type: String,
+    required: true,
+    minlength: 1,
+    trim: true
+  }
 });
 
-var newTodo1 = new Todo({
-  text: 'Test 1',
-  completed: false
+var samp = new User({
+  email: 'feu.joseiii@gmail.com'
 });
 
-newTodo1.save().then((res)=> {
+samp.save().then((res)=> {
   console.log('saved todo', res);
 }, (err) => {
   console.log(err);

@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 mongoose.Promise = global.Promise;
 
-var mongoDB = mongoose.connect('mongodb://localhost:27017/TodoDB', {
+var mongoDB = mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/TodoDB', {
   useMongoClient: true
 });
 

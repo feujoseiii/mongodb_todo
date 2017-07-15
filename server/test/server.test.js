@@ -139,7 +139,6 @@ describe('GET /todos/todoID', () => {
               }
               done();
             });
-
         }).catch((err) => {
           done(err);
         });

@@ -81,3 +81,69 @@ describe('GET /todos', () => {
   });
 
 });
+
+
+describe('GET /todos/todoID', () => {
+  var invalidID = '596a1b6410881b1dd';
+  var validID = '596a1b6410881b1ddca60d37';
+  var dummyTodo = 'dummy todo task';
+
+  it('should return 404 if todoID is not valid', (done) => {
+    request(app)
+      .get(`/todos/:${invalidID}`)
+      .expect(404)
+      .end((err, res) => {
+        if (err) {
+          return done(err);
+        }
+        done();
+      });
+  });
+
+  it('should return 404 if todo is not found', (done) => {
+      request(app)
+        .get(`/todos/:${validID}`)
+        .expect(404)
+        .end((err, res) => {
+          if (err) {
+            return done(err);
+          }
+          done();
+        });
+  });
+
+  it('it should return todo if found', (done) => {
+    var text = 'test todo text';
+    request(app)
+      .post('/todos')
+      .send({text})
+      .expect(200)
+      .expect((res) => {
+        expect(res.body.text).toBe(text);
+      })
+      .end((err,res) => {
+        if (err) {
+          return done(err);
+        }
+        Todo.find().then((todos) => {
+          var curr_todoID = todos[0]._id;
+          request(app)
+            .get(`/todos/${curr_todoID}`)
+            .expect(200)
+            .expect((res) => {
+              expect(res.body.text).toBe(text);
+            })
+            .end((err, res) => {
+              if (err) {
+                return done(err);
+              }
+              done();
+            });
+
+        }).catch((err) => {
+          done(err);
+        });
+      });
+  });
+
+});

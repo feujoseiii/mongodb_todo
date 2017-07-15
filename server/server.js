@@ -27,13 +27,13 @@ app.post('/todos', (req, res) => {
 
 app.get('/todos', (req, res) => {
   Todo.find().then((todos) => {
-    res.send({todos});
+    res.status(200).send({todos});
   }).catch((e) => {
     res.status(400).send(e);
   });
 });
 
-app.get('/test/:todoID', (req, res) => {
+app.get('/todos/:todoID', (req, res) => {
   var todoID = req.params.todoID;
   if (ObjectID.isValid(todoID)) {
     Todo.findById(todoID).then((doc) => {
